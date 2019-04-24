@@ -12,6 +12,16 @@ Vue.use(ElementUI)
 
 // axios配置请求公共根地址
 axios.defaults.baseURL = 'http://127.0.0.1:11333/api/private/v1/'
+axios.interceptors.request.use(
+  function(config) {
+    var token = window.sessionStorage.getItem('token')
+    config.headers.Authorization = token
+    return config
+  },
+  function(error) {
+    return Promise.reject(error)
+  }
+)
 // 给axios配置成为Vue的成员
 Vue.prototype.$http = axios
 
