@@ -1,10 +1,11 @@
 <template>
   <div>
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-      <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-    </el-breadcrumb>
+    <com-crumb name="用户">
+      <!-- <span>111111</span> -->
+      <span slot-scope="xx">
+        <span>{{xx.city}}00000000</span>
+      </span>
+    </com-crumb>
     <el-dialog
       title="收货地址"
       :visible.sync="editDialogVisible"

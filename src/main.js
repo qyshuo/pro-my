@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
+// import ComCrumb from './components/share/crumb.vue'
+import comcrumb from './router/crumb.js'
 import './assets/css/global.css'
 import './assets/fonts/iconfont.css'
 // 引入axios
@@ -28,6 +29,7 @@ Vue.prototype.$http = axios
 // Vue.config.productionTip = false
 
 /* eslint-disable no-new */
+// Vue.component('com-crumb',ComCrumb)
 new Vue({
   el: '#app',
   router,
