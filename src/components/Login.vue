@@ -11,14 +11,14 @@
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="loginForm.password">
+          <el-input v-model="loginForm.password" show-password>
             <i slot="prefix" class="iconfont icon-3702mima"></i>
           </el-input>
         </el-form-item>
         <el-row>
           <el-col :push="15">
             <el-button type="primary" @click="login">登录</el-button>
-            <el-button type="info" @click="reset()">重置</el-button>
+            <el-button type="info" @click="reset">重置</el-button>
           </el-col>
         </el-row>
       </el-form>

@@ -31,11 +31,7 @@
               <span>{{item.authName}}</span>
             </template>
 
-            <el-menu-item
-              :index="item2.path"
-              v-for="item2 in item.children"
-              :key="item2.id"
-            >
+            <el-menu-item :index="item2.path" v-for="item2 in item.children" :key="item2.id">
               <template>
                 <i class="el-icon-menu"></i>
                 <span>{{item2.authName}}</span>
@@ -59,7 +55,7 @@ export default {
   methods: {
     async getMenuList() {
       var { data: dt } = await this.$http.get('/menus')
-        console.log(dt)
+      // console.log(dt)
       this.newList = dt.data
     },
     logout() {

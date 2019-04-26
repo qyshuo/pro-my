@@ -1,12 +1,9 @@
 <template>
-    <div>
-        Welcome 组件
-    </div>
+  <div>Welcome 组件</div>
 </template>
 
 <script>
- export default {
- }
+export default {}
 </script>
 
 <style lang="less" scoped>
