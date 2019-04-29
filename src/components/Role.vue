@@ -1,6 +1,6 @@
 <template>
   <div>
-    <com-crumb two="权利" name="角色"/>
+    <com-crumb two="权利" name="角色列表"/>
     <el-card class="box-card">
       <el-button type="primary">添加角色</el-button>
       <el-table :data="roleList" border style="width: 100%">
@@ -109,6 +109,7 @@ export default {
         children: 'children'
       },
       rightsInfo: [],
+      // 收集叶子节点的参数
       treeShujuChecked: []
     }
   },

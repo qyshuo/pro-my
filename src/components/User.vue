@@ -1,6 +1,6 @@
 <template>
   <div>
-    <com-crumb two="用户" name="用户">
+    <com-crumb two="用户" name="用户列表">
       <!-- <span>111111</span> -->
       <span slot-scope="xx">
         <span>{{xx.city}}00000000</span>
@@ -97,8 +97,10 @@
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="mg_state" label="状态" width="180">
           <!-- <span slot-scope="info">{{info.row.mg_state?'显示':'不显示'}}</span> -->
-          <el-switch slot-scope="info" v-model="info.row.mg_state"
-          @change="stateChange(info.row,info.row.mg_state)"
+          <el-switch
+            slot-scope="info"
+            v-model="info.row.mg_state"
+            @change="stateChange(info.row,info.row.mg_state)"
           ></el-switch>
         </el-table-column>
 
@@ -258,9 +260,9 @@ export default {
   },
   methods: {
     // 用户的状态
-    async stateChange(uid,type) {
-      const { data:dt } = await this.$http.put(`users/${uid.id}/state/${type}`)
-      if(dt.meta.status !==200 ){
+    async stateChange(uid, type) {
+      const { data: dt } = await this.$http.put(`users/${uid.id}/state/${type}`)
+      if (dt.meta.status !== 200) {
         return this.$message.error(dt.meta.msg)
       }
       this.$message.success(dt.meta.msg)

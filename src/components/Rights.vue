@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 面包屑 -->
-    <com-crumb two="权利" name="权限"/>
+    <com-crumb two="权利" name="权限列表"/>
 
     <el-card class="box-card">
       <el-table :data="rightsList" border stripe style="width: 100%">
