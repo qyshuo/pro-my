@@ -1,6 +1,6 @@
 <template>
   <div>
-    <com-crumb name="用户">
+    <com-crumb two="用户" name="用户">
       <!-- <span>111111</span> -->
       <span slot-scope="xx">
         <span>{{xx.city}}00000000</span>
@@ -53,6 +53,8 @@
           <el-button type="primary" @click="addUserDialog=true">
             <span>添加用户</span>
           </el-button>
+          <i class="el-icon-edit"></i>
+          <i class="el-icon-circle-check"></i>
 
           <el-dialog
             title="添加用户"
@@ -95,7 +97,9 @@
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="mg_state" label="状态" width="180">
           <!-- <span slot-scope="info">{{info.row.mg_state?'显示':'不显示'}}</span> -->
-          <el-switch slot-scope="info" v-model="info.row.mg_state"></el-switch>
+          <el-switch slot-scope="info" v-model="info.row.mg_state"
+          @change="stateChange(info.row,info.row.mg_state)"
+          ></el-switch>
         </el-table-column>
 
         <el-table-column label="操作" width="250">
@@ -120,7 +124,12 @@
               placement="top"
               :enterable="false"
             >
-              <el-button size="mini" type="warning" icon="el-icon-setting"></el-button>
+              <el-button
+                size="mini"
+                type="warning"
+                icon="el-icon-setting"
+                @click="showuserRole(info.row)"
+              ></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -135,6 +144,32 @@
         :total="tot"
       ></el-pagination>
     </el-card>
+    <!-- 分配角色的框 -->
+    <el-dialog title="分配角色" :visible.sync="showRole" width="50%" :rules="setRoleRules">
+      <el-form ref="userRoleRefs" :model="userRoleForm" label-width="120px">
+        <el-form-item label="当前的用户:" prop="username">
+          <span>{{userRoleForm.username}}</span>
+        </el-form-item>
+        <el-form-item label="当前的角色:" prop="role_name">
+          <span>{{userRoleForm.role_name}}</span>
+        </el-form-item>
+        <el-form-item label="分配的角色" prop="rid">
+          <!-- <el-input v-model="userRoleForm.rid"></el-input> -->
+          <el-select v-model="userRoleForm.rid" placeholder="请选择">
+            <el-option
+              v-for="item in roleList"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showRole = false">取 消</el-button>
+        <el-button type="primary" @click="showRoles()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -174,7 +209,11 @@ export default {
         password: [{ required: true, message: '密码必填', trigger: 'blur' }],
         email: [
           { required: true, message: '请输入邮箱', trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+          {
+            type: 'email',
+            message: '请输入正确的邮箱地址',
+            trigger: ['blur', 'change']
+          }
         ],
         mobile: [
           { required: true, message: '手机号码不能为空', trigger: 'blur' },
@@ -197,17 +236,71 @@ export default {
         query: '',
         pagenum: 1,
         pagesize: 2
-      }
+      },
+      // 分配角色
+      setRoleRules: {
+        rid: [
+          {
+            required: true,
+            message: '必须选取一个角色',
+            trigger: 'change'
+          }
+        ]
+      },
+      userRoleForm: {
+        rid: 0,
+        username: '',
+        role_name: ''
+      },
+      showRole: false,
+      roleList: []
     }
   },
   methods: {
+    // 用户的状态
+    async stateChange(uid,type) {
+      const { data:dt } = await this.$http.put(`users/${uid.id}/state/${type}`)
+      if(dt.meta.status !==200 ){
+        return this.$message.error(dt.meta.msg)
+      }
+      this.$message.success(dt.meta.msg)
+    },
+    // 分配角色
+    async showRoles() {
+      const { data: dt } = await this.$http.put(
+        `users/${this.userRoleForm.id}/role`,
+        { rid: this.userRoleForm.rid }
+      )
+      if (dt.meta.status !== 200) {
+        return this.$message.error(dt.meta.msg)
+      }
+      this.$message.success(dt.meta.msg)
+      this.showRole = false
+      this.getUserList()
+    },
+    async showuserRole(role) {
+      console.log(role)
+      this.userRoleForm = role
+      const { data: dt } = await this.$http.get('roles')
+      if (dt.meta.status !== 200) {
+        return this.$message.error(dt.meta.msg)
+      }
+      console.log(dt)
+      // children: (...)
+      // id: (...)
+      // roleDesc: (...)
+      // roleName: (...)
+      this.roleList = dt.data
+      // this.setRole = role
+      this.showRole = true
+    },
     // 修改--展示数据列表
     async showEditDialog(id) {
       this.editDialogVisible = true
       const { data: dt } = await this.$http.get('users/' + id)
       this.editForm = dt.data
     },
-    //修改---修改数据
+    // 修改---修改数据
     editUser() {
       this.$refs.editFormRef.validate(async valid => {
         if (valid) {
@@ -231,7 +324,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       })
-        .then(async () => {
+        .then(async() => {
           const { data: dt } = await this.$http.delete('users/' + id)
           // console.log(dt)
           if (dt.meta.status !== 200) {
@@ -282,4 +375,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.el-icon-circle-check {
+  font-size: 12px;
+  color: rgb(68, 178, 170);
+}
 </style>

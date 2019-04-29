@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 // import ComCrumb from './components/share/crumb.vue'
-import comcrumb from './router/crumb.js'
+import './router/crumb.js'
 import './assets/css/global.css'
 import './assets/fonts/iconfont.css'
 // 引入axios

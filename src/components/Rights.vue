@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 面包屑 -->
-    <com-crumb  name="权限"/>
+    <com-crumb two="权利" name="权限"/>
 
     <el-card class="box-card">
       <el-table :data="rightsList" border stripe style="width: 100%">
@@ -36,7 +36,7 @@ export default {
     }
   },
   methods: {
-    //获取用于显示的权限数据
+    // 获取用于显示的权限数据
     async getRightsList() {
       const { data: dt } = await this.$http.get('rights/list')
       if (dt.meta.status !== 200) {
