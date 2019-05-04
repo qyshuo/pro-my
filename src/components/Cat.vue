@@ -5,8 +5,15 @@
     <!-- 卡片区 -->
     <el-card class="box-card">
       <el-button type="primary" @click="showAddCatDialog">添加分类</el-button>
-      <el-table :data="catList" style="width: 100%;margin-bottom: 20px;" border row-key="cat_id">
-        <!-- <el-table-column type="index" label="序号" width="180"></el-table-column> -->
+      <span v-for="(item,k) in dtt" :key="k">{{k}}aaa</span>
+      <!-- <el-table-column type :index="indexMethod" label="序号" width="180">{{querycdt.pagesize}}</el-table-column> -->
+      <el-table :data="catList" style="width: 100%;margin-bottom: 20px;" row-key="cat_id">
+        <el-table-column type="index" :index="indexMethod" label="序号" width="180">
+          <template slot-scope="info">
+            <el-col v-if="info.row.cat_level===0">{{info.$index+1}}</el-col>
+          </template>
+        </el-table-column>
+
         <el-table-column prop="cat_name" label="分类名称" width="180"></el-table-column>
         <el-table-column label="是否有效" width="180">
           <i class="el-icon-circle-check"></i>
@@ -59,6 +66,9 @@ export default {
   },
   data() {
     return {
+      no: 1,
+      dtt: [],
+      dts: [],
       catList: [],
       querycdt: {
         type: 3,
@@ -88,6 +98,12 @@ export default {
     }
   },
   methods: {
+    indexMethod(index) {
+      return (index = 1)
+    },
+    //  indexMethod(index) {
+    //   return index * 2;
+    // },
     // 关闭对话框重置表单
     resetForm() {
       // 重置form表单
@@ -118,7 +134,7 @@ export default {
       //   console.log(this.selectedCatTwo) // [52, 64, __ob__: Observer]
       // 计算当前新分类的pid和level
       var len = this.selectedCatTwo.length
-      if (len == 0) {
+      if (len === 0) {
         // 没有选取上级分类
         this.addCat.cat_pid = 0
         this.addCat.cat_level = 0
@@ -142,11 +158,20 @@ export default {
       const { data: dt } = await this.$http.get('categories', {
         params: this.querycdt
       })
-      //   console.log(dt)
+      // console.log(dt)
       if (dt.meta.status !== 200) {
         return this.$message.error(dt.meta.msg)
       }
       this.catList = dt.data.result
+      this.dtt = dt.data.result
+      // // 循环遍历dtt
+      // dt.data.result.forEach((ele, a) => {
+      //   console.log(a)
+      //   return a
+      // })
+      console.log(dt.data.result)
+      // this.dtt = dt.data.result.length
+      // console.log(this.dtt)
     }
   }
 }

@@ -8,8 +8,15 @@ import './assets/fonts/iconfont.css'
 // 引入axios
 import axios from 'axios'
 
+// 引入处理时间的过滤器
+import moment from 'moment'
+
 import ElementUI from 'element-ui'
 Vue.use(ElementUI)
+// 全局的时间过滤器
+Vue.filter('dataFormat',v=>{
+  return moment(v).format('YYYY-MM-DD HH:mm:ss')
+})
 
 // axios配置请求公共根地址
 axios.defaults.baseURL = 'http://127.0.0.1:11333/api/private/v1/'
