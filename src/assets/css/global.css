@@ -19,3 +19,10 @@ i.iconfont {
   margin-top: 15px;
   font-size: 12px;
 }
+.el-step__title {
+  font-size: 12px;
+}
+.ql-editor,
+.ql-blank {
+  min-height: 200px;
+}

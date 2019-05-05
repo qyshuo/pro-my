@@ -13,7 +13,7 @@
           </el-input>
         </el-col>
         <el-col :span="7">
-          <el-button type="primary">添加用户</el-button>
+          <el-button type="primary" @click="tianjiaGoods">添加商品</el-button>
         </el-col>
       </el-row>
       <el-table :data="tableData" border stripe style="width: 100%">
@@ -62,6 +62,10 @@ export default {
     }
   },
   methods: {
+    // 添加商品按钮
+    tianjiaGoods() {
+      this.$router.push('/goodsadd')
+    },
     async getTableData() {
       const { data: dt } = await this.$http.get('/goods', {
         params: this.querycdt

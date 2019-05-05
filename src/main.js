@@ -14,7 +14,7 @@ import moment from 'moment'
 import ElementUI from 'element-ui'
 Vue.use(ElementUI)
 // 全局的时间过滤器
-Vue.filter('dataFormat',v=>{
+Vue.filter('dataFormat', v => {
   return moment(v).format('YYYY-MM-DD HH:mm:ss')
 })
 
